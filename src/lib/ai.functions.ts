@@ -12,7 +12,9 @@ function getModel() {
   return createLovableAiGateway(key)(MODEL);
 }
 
-function extractJson(raw: string): unknown {
+type JsonValue = string | number | boolean | null | JsonValue[] | { [k: string]: JsonValue };
+
+function extractJson(raw: string): JsonValue {
   const cleaned = raw
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/```\s*$/i, "")
@@ -20,7 +22,7 @@ function extractJson(raw: string): unknown {
   const start = cleaned.indexOf("{");
   const end = cleaned.lastIndexOf("}");
   if (start === -1 || end === -1) throw new Error("No JSON in response");
-  return JSON.parse(cleaned.slice(start, end + 1));
+  return JSON.parse(cleaned.slice(start, end + 1)) as JsonValue;
 }
 
 /* -------------------- Extract resume -------------------- */
@@ -55,9 +57,9 @@ ${data.text.slice(0, 20000)}
 """`;
     const { text } = await generateText({ model: getModel(), prompt });
     try {
-      return extractJson(text) as Record<string, unknown>;
+      return extractJson(text) as { [k: string]: JsonValue };
     } catch {
-      return { summary: data.text.slice(0, 500), rawText: data.text };
+      return { summary: data.text.slice(0, 500), rawText: data.text } as { [k: string]: JsonValue };
     }
   });
 
@@ -96,7 +98,7 @@ VAGA:
 ${data.jobDescription.slice(0, 8000)}
 """`;
     const { text } = await generateText({ model: getModel(), prompt });
-    return extractJson(text);
+    return extractJson(text) as { [k: string]: JsonValue };
   });
 
 /* -------------------- ATS resume -------------------- */
@@ -141,7 +143,7 @@ VAGA:
 ${data.jobDescription.slice(0, 8000)}
 """`;
     const { text } = await generateText({ model: getModel(), prompt });
-    return extractJson(text);
+    return extractJson(text) as { [k: string]: JsonValue };
   });
 
 /* -------------------- Cover letter -------------------- */
