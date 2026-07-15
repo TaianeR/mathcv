@@ -13,6 +13,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCurriculoRouteImport } from './routes/app.curriculo'
+import { Route as AppAnaliseRouteImport } from './routes/app.analise'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -34,15 +35,22 @@ const AppCurriculoRoute = AppCurriculoRouteImport.update({
   path: '/curriculo',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnaliseRoute = AppAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/analise': typeof AppAnaliseRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/analise': typeof AppAnaliseRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app': typeof AppIndexRoute
 }
@@ -50,15 +58,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/app/analise': typeof AppAnaliseRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/curriculo' | '/app/'
+  fullPaths: '/' | '/app' | '/app/analise' | '/app/curriculo' | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/curriculo' | '/app'
-  id: '__root__' | '/' | '/app' | '/app/curriculo' | '/app/'
+  to: '/' | '/app/analise' | '/app/curriculo' | '/app'
+  id: '__root__' | '/' | '/app' | '/app/analise' | '/app/curriculo' | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -96,15 +105,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCurriculoRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/analise': {
+      id: '/app/analise'
+      path: '/analise'
+      fullPath: '/app/analise'
+      preLoaderRoute: typeof AppAnaliseRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAnaliseRoute: typeof AppAnaliseRoute
   AppCurriculoRoute: typeof AppCurriculoRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAnaliseRoute: AppAnaliseRoute,
   AppCurriculoRoute: AppCurriculoRoute,
   AppIndexRoute: AppIndexRoute,
 }

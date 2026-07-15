@@ -37,7 +37,7 @@ function AnalisePage() {
     setLoading(true);
     try {
       storage.setJobDescription(jobDescription);
-      const raw = (await runAnalyze({ data: { resumeText, jobDescription } })) as MatchAnalysis;
+      const raw = (await runAnalyze({ data: { resumeText, jobDescription } })) as unknown as Partial<MatchAnalysis>;
       const safe: MatchAnalysis = {
         score: Math.max(0, Math.min(100, Math.round(Number(raw.score) || 0))),
         summary: raw.summary ?? "",
