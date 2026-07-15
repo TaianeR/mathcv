@@ -9,38 +9,144 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppHistoricoRouteImport } from './routes/app.historico'
+import { Route as AppCurriculoRouteImport } from './routes/app.curriculo'
+import { Route as AppConfiguracoesRouteImport } from './routes/app.configuracoes'
+import { Route as AppCartaRouteImport } from './routes/app.carta'
+import { Route as AppAtsRouteImport } from './routes/app.ats'
+import { Route as AppAnaliseRouteImport } from './routes/app.analise'
 
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoricoRoute = AppHistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCurriculoRoute = AppCurriculoRouteImport.update({
+  id: '/curriculo',
+  path: '/curriculo',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCartaRoute = AppCartaRouteImport.update({
+  id: '/carta',
+  path: '/carta',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAtsRoute = AppAtsRouteImport.update({
+  id: '/ats',
+  path: '/ats',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnaliseRoute = AppAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
+  '/app/carta': typeof AppCartaRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
+  '/app/carta': typeof AppCartaRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
+  '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
+  '/app/carta': typeof AppCartaRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
+  '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/analise'
+    | '/app/ats'
+    | '/app/carta'
+    | '/app/configuracoes'
+    | '/app/curriculo'
+    | '/app/historico'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app/analise'
+    | '/app/ats'
+    | '/app/carta'
+    | '/app/configuracoes'
+    | '/app/curriculo'
+    | '/app/historico'
+    | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/analise'
+    | '/app/ats'
+    | '/app/carta'
+    | '/app/configuracoes'
+    | '/app/curriculo'
+    | '/app/historico'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +154,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/historico': {
+      id: '/app/historico'
+      path: '/historico'
+      fullPath: '/app/historico'
+      preLoaderRoute: typeof AppHistoricoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/curriculo': {
+      id: '/app/curriculo'
+      path: '/curriculo'
+      fullPath: '/app/curriculo'
+      preLoaderRoute: typeof AppCurriculoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/configuracoes': {
+      id: '/app/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/app/configuracoes'
+      preLoaderRoute: typeof AppConfiguracoesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/carta': {
+      id: '/app/carta'
+      path: '/carta'
+      fullPath: '/app/carta'
+      preLoaderRoute: typeof AppCartaRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/ats': {
+      id: '/app/ats'
+      path: '/ats'
+      fullPath: '/app/ats'
+      preLoaderRoute: typeof AppAtsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/analise': {
+      id: '/app/analise'
+      path: '/analise'
+      fullPath: '/app/analise'
+      preLoaderRoute: typeof AppAnaliseRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAnaliseRoute: typeof AppAnaliseRoute
+  AppAtsRoute: typeof AppAtsRoute
+  AppCartaRoute: typeof AppCartaRoute
+  AppConfiguracoesRoute: typeof AppConfiguracoesRoute
+  AppCurriculoRoute: typeof AppCurriculoRoute
+  AppHistoricoRoute: typeof AppHistoricoRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAnaliseRoute: AppAnaliseRoute,
+  AppAtsRoute: AppAtsRoute,
+  AppCartaRoute: AppCartaRoute,
+  AppConfiguracoesRoute: AppConfiguracoesRoute,
+  AppCurriculoRoute: AppCurriculoRoute,
+  AppHistoricoRoute: AppHistoricoRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
