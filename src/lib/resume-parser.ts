@@ -6,10 +6,11 @@ export async function extractResumeText(file: File): Promise<string> {
     return await file.text();
   }
   if (name.endsWith(".docx") || name.endsWith(".doc")) {
+    // @ts-expect-error - no types shipped for browser bundle
     const mammoth = await import("mammoth/mammoth.browser.js");
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
-    return result.value ?? "";
+    return (result.value as string) ?? "";
   }
   if (name.endsWith(".pdf")) {
     return await extractPdfText(file);
@@ -20,8 +21,6 @@ export async function extractResumeText(file: File): Promise<string> {
 
 async function extractPdfText(file: File): Promise<string> {
   const pdfjs = await import("pdfjs-dist");
-  // Use worker from CDN to avoid bundling issues
-  // @ts-expect-error - GlobalWorkerOptions exists at runtime
   pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
   const buf = await file.arrayBuffer();
   const doc = await pdfjs.getDocument({ data: buf }).promise;
