@@ -22,7 +22,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-const nav = [
+const nav: Array<{ title: string; url: string; icon: typeof LayoutDashboard; exact?: boolean }> = [
   { title: "Dashboard", url: "/app", icon: LayoutDashboard, exact: true },
   { title: "Meu Currículo", url: "/app/curriculo", icon: FileText },
   { title: "Análise de Match", url: "/app/analise", icon: Target },
@@ -30,7 +30,7 @@ const nav = [
   { title: "Carta de Apresentação", url: "/app/carta", icon: Mail },
   { title: "Histórico", url: "/app/historico", icon: History },
   { title: "Configurações", url: "/app/configuracoes", icon: Settings },
-] as const;
+];
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
@@ -55,7 +55,7 @@ export function AppSidebar() {
               {nav.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={isActive(item.url, item.exact)} tooltip={item.title}>
-                    <Link to={item.url} className="flex items-center gap-2">
+                    <Link to={item.url as "/app"} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
                     </Link>
