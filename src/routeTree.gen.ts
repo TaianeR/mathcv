@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppHistoricoRouteImport } from './routes/app.historico'
 import { Route as AppCurriculoRouteImport } from './routes/app.curriculo'
 import { Route as AppCartaRouteImport } from './routes/app.carta'
 import { Route as AppAtsRouteImport } from './routes/app.ats'
@@ -30,6 +31,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoricoRoute = AppHistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCurriculoRoute = AppCurriculoRouteImport.update({
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/app/ats': typeof AppAtsRoute
   '/app/carta': typeof AppCartaRoute
   '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/app/ats': typeof AppAtsRoute
   '/app/carta': typeof AppCartaRoute
   '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/app/ats': typeof AppAtsRoute
   '/app/carta': typeof AppCartaRoute
   '/app/curriculo': typeof AppCurriculoRoute
+  '/app/historico': typeof AppHistoricoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/app/ats'
     | '/app/carta'
     | '/app/curriculo'
+    | '/app/historico'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/app/ats'
     | '/app/carta'
     | '/app/curriculo'
+    | '/app/historico'
     | '/app'
   id:
     | '__root__'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/app/ats'
     | '/app/carta'
     | '/app/curriculo'
+    | '/app/historico'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -135,6 +147,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/historico': {
+      id: '/app/historico'
+      path: '/historico'
+      fullPath: '/app/historico'
+      preLoaderRoute: typeof AppHistoricoRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/curriculo': {
@@ -173,6 +192,7 @@ interface AppRouteChildren {
   AppAtsRoute: typeof AppAtsRoute
   AppCartaRoute: typeof AppCartaRoute
   AppCurriculoRoute: typeof AppCurriculoRoute
+  AppHistoricoRoute: typeof AppHistoricoRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -181,6 +201,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAtsRoute: AppAtsRoute,
   AppCartaRoute: AppCartaRoute,
   AppCurriculoRoute: AppCurriculoRoute,
+  AppHistoricoRoute: AppHistoricoRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
