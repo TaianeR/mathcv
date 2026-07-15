@@ -13,6 +13,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCurriculoRouteImport } from './routes/app.curriculo'
+import { Route as AppAtsRouteImport } from './routes/app.ats'
 import { Route as AppAnaliseRouteImport } from './routes/app.analise'
 
 const AppRoute = AppRouteImport.update({
@@ -35,6 +36,11 @@ const AppCurriculoRoute = AppCurriculoRouteImport.update({
   path: '/curriculo',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAtsRoute = AppAtsRouteImport.update({
+  id: '/ats',
+  path: '/ats',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAnaliseRoute = AppAnaliseRouteImport.update({
   id: '/analise',
   path: '/analise',
@@ -45,12 +51,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app': typeof AppIndexRoute
 }
@@ -59,15 +67,29 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/analise': typeof AppAnaliseRoute
+  '/app/ats': typeof AppAtsRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/analise' | '/app/curriculo' | '/app/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/app/analise'
+    | '/app/ats'
+    | '/app/curriculo'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/analise' | '/app/curriculo' | '/app'
-  id: '__root__' | '/' | '/app' | '/app/analise' | '/app/curriculo' | '/app/'
+  to: '/' | '/app/analise' | '/app/ats' | '/app/curriculo' | '/app'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/analise'
+    | '/app/ats'
+    | '/app/curriculo'
+    | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,6 +127,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCurriculoRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/ats': {
+      id: '/app/ats'
+      path: '/ats'
+      fullPath: '/app/ats'
+      preLoaderRoute: typeof AppAtsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/analise': {
       id: '/app/analise'
       path: '/analise'
@@ -117,12 +146,14 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAnaliseRoute: typeof AppAnaliseRoute
+  AppAtsRoute: typeof AppAtsRoute
   AppCurriculoRoute: typeof AppCurriculoRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAnaliseRoute: AppAnaliseRoute,
+  AppAtsRoute: AppAtsRoute,
   AppCurriculoRoute: AppCurriculoRoute,
   AppIndexRoute: AppIndexRoute,
 }
