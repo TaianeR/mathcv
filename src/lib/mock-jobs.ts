@@ -12,6 +12,7 @@ export interface Job {
   area: string;
   description: string;
   postedAt: string;
+  url?: string;
 }
 
 export const LEVELS: Job["level"][] = [
