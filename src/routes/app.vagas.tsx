@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Briefcase, MapPin, Building2, Filter, Target, Search, X } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Briefcase, MapPin, Building2, Filter, Target, Search, X, Globe, Loader2, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 
 import { jobs, LEVELS, REMOTE_OPTIONS, buildJobDescription, type Job } from "@/lib/mock-jobs";
 import { storage } from "@/lib/storage";
+import { searchJobs } from "@/lib/jobs-search.functions";
 
 export const Route = createFileRoute("/app/vagas")({
   head: () => ({ meta: [{ title: "Buscar vagas — MatchCV" }] }),
@@ -34,6 +36,7 @@ const MAX_SALARY = Math.max(...jobs.map((j) => j.salaryMax));
 
 function JobsPage() {
   const navigate = useNavigate();
+  const searchJobsFn = useServerFn(searchJobs);
   const [title, setTitle] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState<string>("all");
@@ -42,6 +45,9 @@ function JobsPage() {
   const [levels, setLevels] = useState<Set<Job["level"]>>(new Set());
   const [techs, setTechs] = useState<Set<string>>(new Set());
   const [salary, setSalary] = useState<[number, number]>([0, MAX_SALARY]);
+  const [source, setSource] = useState<"mock" | "web">("mock");
+  const [webJobs, setWebJobs] = useState<Job[]>([]);
+  const [searching, setSearching] = useState(false);
 
   const toggleSet = <T,>(set: Set<T>, value: T, setter: (s: Set<T>) => void) => {
     const next = new Set(set);
@@ -50,10 +56,12 @@ function JobsPage() {
     setter(next);
   };
 
+  const dataset = source === "web" ? webJobs : jobs;
+
   const filtered = useMemo(() => {
     const t = title.trim().toLowerCase();
     const c = city.trim().toLowerCase();
-    return jobs.filter((j) => {
+    return dataset.filter((j) => {
       if (t && !j.title.toLowerCase().includes(t) && !j.area.toLowerCase().includes(t)) return false;
       if (c && !j.city.toLowerCase().includes(c)) return false;
       if (state !== "all" && j.state !== state) return false;
@@ -61,10 +69,10 @@ function JobsPage() {
       if (remote.size && !remote.has(j.remote)) return false;
       if (levels.size && !levels.has(j.level)) return false;
       if (techs.size && ![...techs].every((tech) => j.technologies.includes(tech))) return false;
-      if (j.salaryMax < salary[0] || j.salaryMin > salary[1]) return false;
+      if (j.salaryMax > 0 && (j.salaryMax < salary[0] || j.salaryMin > salary[1])) return false;
       return true;
     });
-  }, [title, city, state, company, remote, levels, techs, salary]);
+  }, [dataset, title, city, state, company, remote, levels, techs, salary]);
 
   const clearAll = () => {
     setTitle("");
@@ -93,13 +101,72 @@ function JobsPage() {
     navigate({ to: "/app/analise" });
   };
 
+  const runWebSearch = async () => {
+    setSearching(true);
+    try {
+      const res = await searchJobsFn({
+        data: {
+          title,
+          city,
+          state: state !== "all" ? state : "",
+          remote: [...remote],
+          levels: [...levels],
+          techs: [...techs],
+          company: company !== "all" ? company : "",
+          salaryMin: salary[0],
+          salaryMax: salary[1],
+          limit: 12,
+        },
+      });
+      if (!res.ok) {
+        toast.error(`Falha na busca web: ${res.error ?? "erro desconhecido"}`);
+        return;
+      }
+      setWebJobs(res.jobs);
+      setSource("web");
+      toast.success(
+        res.jobs.length
+          ? `${res.jobs.length} ${res.jobs.length === 1 ? "vaga encontrada" : "vagas encontradas"} na web.`
+          : "Nenhuma vaga encontrada. Ajuste os filtros.",
+      );
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Erro ao buscar vagas.");
+    } finally {
+      setSearching(false);
+    }
+  };
+
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Buscar vagas</h1>
-        <p className="mt-1 text-muted-foreground">
-          Filtre por cargo, localização, modelo de trabalho, faixa salarial, nível, tecnologias e empresa.
-        </p>
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight">Buscar vagas</h1>
+          <p className="mt-1 text-muted-foreground">
+            Filtre por cargo, localização, modelo de trabalho, faixa salarial, nível, tecnologias e empresa.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="inline-flex overflow-hidden rounded-md border border-border/60 text-sm">
+            <button
+              type="button"
+              onClick={() => setSource("mock")}
+              className={`px-3 py-1.5 transition ${source === "mock" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+            >
+              Exemplos
+            </button>
+            <button
+              type="button"
+              onClick={() => (webJobs.length ? setSource("web") : runWebSearch())}
+              className={`px-3 py-1.5 transition ${source === "web" ? "bg-primary text-primary-foreground" : "hover:bg-muted"}`}
+            >
+              Web {webJobs.length ? `(${webJobs.length})` : ""}
+            </button>
+          </div>
+          <Button onClick={runWebSearch} disabled={searching} className="gap-1.5">
+            {searching ? <Loader2 className="h-4 w-4 animate-spin" /> : <Globe className="h-4 w-4" />}
+            {searching ? "Buscando na web..." : "Buscar na web"}
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
@@ -298,10 +365,24 @@ function JobsPage() {
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-2 md:items-end">
-                      <p className="text-sm font-semibold">
-                        R$ {job.salaryMin.toLocaleString("pt-BR")} –{" "}
-                        {job.salaryMax.toLocaleString("pt-BR")}
-                      </p>
+                        {job.salaryMax > 0 ? (
+                          <p className="text-sm font-semibold">
+                            R$ {job.salaryMin.toLocaleString("pt-BR")} –{" "}
+                            {job.salaryMax.toLocaleString("pt-BR")}
+                          </p>
+                        ) : (
+                          <p className="text-xs text-muted-foreground">Salário não informado</p>
+                        )}
+                        {job.url && (
+                          <a
+                            href={job.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                          >
+                            Ver vaga original <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
                       <Button size="sm" onClick={() => analyze(job)} className="gap-1.5">
                         <Target className="h-4 w-4" /> Analisar match
                       </Button>
