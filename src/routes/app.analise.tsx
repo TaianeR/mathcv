@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { analyzeMatch } from "@/lib/ai.functions";
 import { storage, makeId } from "@/lib/storage";
+import { aiErrorMessage } from "@/lib/ai-errors";
 import type { MatchAnalysis } from "@/lib/schemas";
 
 export const Route = createFileRoute("/app/analise")({
@@ -61,7 +62,7 @@ function AnalisePage() {
       toast.success("Análise concluída.");
     } catch (e) {
       console.error(e);
-      toast.error("Falha ao analisar. Tente novamente.");
+      toast.error(aiErrorMessage(e, "Falha ao analisar. Tente novamente."));
     } finally {
       setLoading(false);
     }
