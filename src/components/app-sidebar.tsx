@@ -8,6 +8,7 @@ import {
   History,
   Settings,
   Sparkles as Logo,
+  Briefcase,
 } from "lucide-react";
 
 import {
@@ -25,6 +26,7 @@ import {
 const nav: Array<{ title: string; url: string; icon: typeof LayoutDashboard; exact?: boolean }> = [
   { title: "Dashboard", url: "/app", icon: LayoutDashboard, exact: true },
   { title: "Meu Currículo", url: "/app/curriculo", icon: FileText },
+  { title: "Buscar Vagas", url: "/app/vagas", icon: Briefcase },
   { title: "Análise de Match", url: "/app/analise", icon: Target },
   { title: "ATS Generator", url: "/app/ats", icon: Sparkles },
   { title: "Carta de Apresentação", url: "/app/carta", icon: Mail },

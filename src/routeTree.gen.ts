@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppVagasRouteImport } from './routes/app.vagas'
 import { Route as AppHistoricoRouteImport } from './routes/app.historico'
 import { Route as AppCurriculoRouteImport } from './routes/app.curriculo'
 import { Route as AppConfiguracoesRouteImport } from './routes/app.configuracoes'
@@ -32,6 +33,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppVagasRoute = AppVagasRouteImport.update({
+  id: '/vagas',
+  path: '/vagas',
   getParentRoute: () => AppRoute,
 } as any)
 const AppHistoricoRoute = AppHistoricoRouteImport.update({
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/app/configuracoes': typeof AppConfiguracoesRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/historico': typeof AppHistoricoRoute
+  '/app/vagas': typeof AppVagasRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/app/configuracoes': typeof AppConfiguracoesRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/historico': typeof AppHistoricoRoute
+  '/app/vagas': typeof AppVagasRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/app/configuracoes': typeof AppConfiguracoesRoute
   '/app/curriculo': typeof AppCurriculoRoute
   '/app/historico': typeof AppHistoricoRoute
+  '/app/vagas': typeof AppVagasRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/app/configuracoes'
     | '/app/curriculo'
     | '/app/historico'
+    | '/app/vagas'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/app/configuracoes'
     | '/app/curriculo'
     | '/app/historico'
+    | '/app/vagas'
     | '/app'
   id:
     | '__root__'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/app/configuracoes'
     | '/app/curriculo'
     | '/app/historico'
+    | '/app/vagas'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -159,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/vagas': {
+      id: '/app/vagas'
+      path: '/vagas'
+      fullPath: '/app/vagas'
+      preLoaderRoute: typeof AppVagasRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/historico': {
@@ -213,6 +232,7 @@ interface AppRouteChildren {
   AppConfiguracoesRoute: typeof AppConfiguracoesRoute
   AppCurriculoRoute: typeof AppCurriculoRoute
   AppHistoricoRoute: typeof AppHistoricoRoute
+  AppVagasRoute: typeof AppVagasRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -223,6 +243,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppConfiguracoesRoute: AppConfiguracoesRoute,
   AppCurriculoRoute: AppCurriculoRoute,
   AppHistoricoRoute: AppHistoricoRoute,
+  AppVagasRoute: AppVagasRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
@@ -235,13 +256,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
