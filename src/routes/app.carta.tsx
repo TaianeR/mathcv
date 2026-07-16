@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea";
 import { generateCoverLetter } from "@/lib/ai.functions";
 import { storage, makeId } from "@/lib/storage";
+import { aiErrorMessage } from "@/lib/ai-errors";
 
 export const Route = createFileRoute("/app/carta")({
   head: () => ({ meta: [{ title: "Carta de Apresentação — MatchCV" }] }),
@@ -49,7 +50,7 @@ function CartaPage() {
       toast.success("Carta gerada.");
     } catch (e) {
       console.error(e);
-      toast.error("Falha ao gerar carta.");
+      toast.error(aiErrorMessage(e, "Falha ao gerar carta."));
     } finally {
       setLoading(false);
     }
@@ -61,7 +62,8 @@ function CartaPage() {
   };
 
   const downloadText = (ext: "txt" | "md") => {
-    const blob = new Blob([cover], { type: "text/plain;charset=utf-8" });
+    const mime = ext === "md" ? "text/markdown;charset=utf-8" : "text/plain;charset=utf-8";
+    const blob = new Blob([cover], { type: mime });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
