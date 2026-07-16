@@ -84,14 +84,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Descubra sua compatibilidade com qualquer vaga e gere currículos ATS Friendly em segundos, com Inteligência Artificial.",
       },
-      { property: "og:title", content: "MatchCV — Matchmaking de vagas com IA" },
+      { property: "og:title", content: "MatchCV — Matchmaking de vagas com IA e currículo ATS Friendly" },
       {
         property: "og:description",
         content:
-          "Compare seu currículo com qualquer vaga, veja seu Match Score e gere versões ATS Friendly automaticamente.",
+          "Descubra sua compatibilidade com qualquer vaga e gere currículos ATS Friendly em segundos, com Inteligência Artificial.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "MatchCV — Matchmaking de vagas com IA e currículo ATS Friendly" },
+      { name: "twitter:description", content: "Descubra sua compatibilidade com qualquer vaga e gere currículos ATS Friendly em segundos, com Inteligência Artificial." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/14b88689-0e13-4ab1-9885-c5b5ee4b39e1/id-preview-914ef8c7--202ea4da-326a-42ff-a335-09582322cceb.lovable.app-1784240137637.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/14b88689-0e13-4ab1-9885-c5b5ee4b39e1/id-preview-914ef8c7--202ea4da-326a-42ff-a335-09582322cceb.lovable.app-1784240137637.png" },
     ],
     links: [
       {
