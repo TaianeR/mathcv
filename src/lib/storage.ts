@@ -56,6 +56,10 @@ export const storage = {
     if (!isBrowser) return;
     Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
   },
+  clearHistory: () => {
+    if (!isBrowser) return;
+    localStorage.removeItem(KEYS.history);
+  },
 };
 
 export interface HistoryItem {
