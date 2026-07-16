@@ -22,7 +22,8 @@ function HistoricoPage() {
   useEffect(() => setItems(storage.getHistory()), []);
 
   const clear = () => {
-    localStorage.removeItem("matchcv.history");
+    if (!confirm("Apagar todo o histórico?")) return;
+    storage.clearHistory();
     setItems([]);
     toast.success("Histórico apagado.");
   };
