@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { generateATS } from "@/lib/ai.functions";
 import { storage, makeId } from "@/lib/storage";
+import { aiErrorMessage } from "@/lib/ai-errors";
 import type { AtsResume } from "@/lib/schemas";
 import { atsToMarkdown, atsToPlainText, exportDocx, exportMarkdown, exportPdf, exportTxt } from "@/lib/exports";
 
@@ -73,7 +74,7 @@ function AtsPage() {
       toast.success("Currículo ATS gerado!");
     } catch (e) {
       console.error(e);
-      toast.error("Falha ao gerar. Tente novamente.");
+      toast.error(aiErrorMessage(e, "Falha ao gerar. Tente novamente."));
     } finally {
       setLoading(false);
     }
