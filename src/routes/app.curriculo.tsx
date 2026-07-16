@@ -54,25 +54,35 @@ function CurriculoPage() {
       const text = await extractResumeText(file);
       if (!text.trim()) {
         toast.error("Não foi possível extrair texto do arquivo.");
-        setUploading(false);
         return;
       }
       setResumeText(text);
       storage.setResumeText(text);
       toast.success("Texto extraído. Analisando com IA...");
+      setUploading(false);
       setExtracting(true);
       const extracted = (await runExtract({ data: { text } })) as Partial<Profile>;
-      const merged: Profile = profileSchema.parse({
+      const parsed = profileSchema.safeParse({
         ...profile,
         ...extracted,
         rawText: text,
       });
+      const merged: Profile = parsed.success
+        ? parsed.data
+        : { ...profile, ...(extracted as Partial<Profile>), rawText: text };
       setProfile(merged);
       storage.setProfile(merged);
       toast.success("Perfil preenchido automaticamente!");
     } catch (e) {
       console.error(e);
-      toast.error("Falha ao processar o arquivo. Tente colar o texto manualmente.");
+      const msg = e instanceof Error ? e.message : "";
+      if (/429|rate/i.test(msg)) {
+        toast.error("Muitas requisições. Aguarde alguns segundos e tente novamente.");
+      } else if (/402|credit/i.test(msg)) {
+        toast.error("Créditos de IA esgotados. Adicione créditos no workspace.");
+      } else {
+        toast.error("Falha ao processar o arquivo. Você pode editar o texto manualmente abaixo.");
+      }
     } finally {
       setUploading(false);
       setExtracting(false);
@@ -80,8 +90,9 @@ function CurriculoPage() {
   };
 
   const saveProfile = () => {
-    const parsed = profileSchema.parse({ ...profile, rawText: resumeText });
-    storage.setProfile(parsed);
+    const parsed = profileSchema.safeParse({ ...profile, rawText: resumeText });
+    const next = parsed.success ? parsed.data : { ...profile, rawText: resumeText };
+    storage.setProfile(next);
     storage.setResumeText(resumeText);
     toast.success("Perfil salvo.");
   };
