@@ -21,6 +21,14 @@ O **Career Match AI** é uma plataforma desenvolvida para ajudar candidatos a au
 
 ---
 
+## 🌍 Acesse a aplicação
+
+### 🚀 https://mathcv.lovable.app/
+
+[![Live Demo](https://img.shields.io/badge/🌐-Acessar%20Aplicação-4DA3FF?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mathcv.lovable.app/)
+
+---
+
 # 🎯🚀 Objetivos
 
 ✅ Facilitar a adaptação do currículo para cada vaga.
