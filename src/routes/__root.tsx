@@ -96,6 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Descubra sua compatibilidade com qualquer vaga e gere currículos ATS Friendly em segundos, com Inteligência Artificial." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/14b88689-0e13-4ab1-9885-c5b5ee4b39e1/id-preview-914ef8c7--202ea4da-326a-42ff-a335-09582322cceb.lovable.app-1784240137637.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/14b88689-0e13-4ab1-9885-c5b5ee4b39e1/id-preview-914ef8c7--202ea4da-326a-42ff-a335-09582322cceb.lovable.app-1784240137637.png" },
+      { name: "google-site-verification", content: "bzfGo7rCtunWl4b4c9ZGOMHp0i-LRNJ8LPpL1C8fEvw" },
     ],
     links: [
       {
