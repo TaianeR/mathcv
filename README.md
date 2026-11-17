@@ -33,44 +33,31 @@ O Career Match AI ajuda candidatos a aumentar as chances em processos seletivos.
 
 ## 🛠️ Tecnologias e ferramentas
 
-### Frontend
-- React 19
+**Frontend**
+- React
 - TypeScript
-- Tailwind CSS
-- ShadCN/UI
-- Framer Motion
-- Lucide React
-
-### Framework e gerenciamento
-- TanStack Start
-- TanStack Router
-- TanStack Query
 - Vite
+- Tailwind CSS
+- Shadcn/UI
 
-### Inteligência Artificial
-- OpenAI API
-- AI SDK
-
-### Processamento de documentos
-- PDF.js
-- Mammoth
-- DOCX
-- jsPDF
-
-### Formulários e validação
+**Componentes e interface**
 - React Hook Form
 - Zod
+- Framer Motion
+- Lucide Icons
 
-### Visualização de dados
+**Dados e visualização**
+- TanStack Query
 - Recharts
 
-### Desenvolvimento
-- Git
-- GitHub
-- Bun
-- ESLint
-- Prettier
+**Inteligência Artificial**
+- OpenAI API
+
+**Desenvolvimento**
 - Lovable
+- Git e GitHub
+
+
 
 ## 🎨 Design
 
