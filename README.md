@@ -23,27 +23,54 @@ O Career Match AI ajuda candidatos a aumentar as chances em processos seletivos.
 
 ## ✨ Funcionalidades
 
-- **Upload de currículo** em PDF, DOC, DOCX ou TXT, com extração de nome, experiência, formação, habilidades, idiomas e certificações
-- **Match de vagas:** compara currículo e vaga, com análise de habilidades técnicas e comportamentais
-- **ATS Generator:** reorganiza e melhora o currículo respeitando as informações reais
-- **Carta de apresentação** com tom profissional, objetivo e natural
-- **Dashboard** com currículos gerados, match médio, histórico e vagas analisadas
-- **Exportação** em PDF, DOCX, TXT e Markdown
-- **Landing page** responsiva com explicação do funcionamento e FAQ
+1. O usuário envia seu currículo em formato compatível.
+2. A aplicação extrai e organiza as informações do documento.
+3. O usuário informa a descrição da vaga desejada.
+4. A inteligência artificial analisa a compatibilidade entre o currículo e a vaga.
+5. O sistema apresenta o Match Score e identifica pontos de melhoria.
+6. A aplicação gera um currículo otimizado para ATS e uma carta de apresentação.
+7. O usuário pode exportar os documentos gerados.
 
-## 🛠 Tecnologias
+## 🛠️ Tecnologias e ferramentas
 
-React • TypeScript • Vite • TailwindCSS • ShadCN/UI • React Hook Form • Zod • TanStack Query • Framer Motion • Recharts • Lucide Icons • OpenAI API • Lovable
+### Frontend
+- React 19
+- TypeScript
+- Tailwind CSS
+- ShadCN/UI
+- Framer Motion
+- Lucide React
 
-## 🔄 Como funciona
+### Framework e gerenciamento
+- TanStack Start
+- TanStack Router
+- TanStack Query
+- Vite
 
-1. A pessoa envia o currículo.
-2. A IA extrai as informações.
-3. A pessoa cola a descrição da vaga.
-4. A IA compara os dois e calcula o Match Score.
-5. O app mostra sugestões de melhoria.
-6. O app gera o currículo ATS e a carta de apresentação.
-7. A pessoa exporta os arquivos.
+### Inteligência Artificial
+- OpenAI API
+- AI SDK
+
+### Processamento de documentos
+- PDF.js
+- Mammoth
+- DOCX
+- jsPDF
+
+### Formulários e validação
+- React Hook Form
+- Zod
+
+### Visualização de dados
+- Recharts
+
+### Desenvolvimento
+- Git
+- GitHub
+- Bun
+- ESLint
+- Prettier
+- Lovable
 
 ## 🎨 Design
 
